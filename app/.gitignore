@@ -1,0 +1,69 @@
+
+# Build složky
+/build
+/app/build
+/**/*.iml
+
+# Složka pro generované soubory Android Studio
+/.gradle/
+/.local/
+/.idea/
+/captures/
+/.externalNativeBuild/
+
+# Logy a dočasné soubory
+*.log
+*.tmp
+*.swp
+*.swo
+*.swn
+
+# Dependency cache soubory
+**/.gradle
+**/local.properties
+**/gradle.properties
+**/.idea/**/workspace.xml
+**/.idea/**/tasks.xml
+**/.idea/**/usage.statistics.xml
+**/.idea/**/dictionaries
+**/.idea/**/shelf
+
+# Binární soubory
+*.apk
+*.ap_
+*.aab
+*.dex
+*.so
+*.o
+*.obj
+
+# Proguard a generované soubory
+*.mapping
+*.cxx
+*.hprof
+*.class
+*.DS_Store
+
+# Keystore soubory (pokud nejsou v repozitáři úmyslně)
+*.jks
+*.keystore
+
+# Firebase a Google API klíče (pokud nejsou verzovány)
+google-services.json
+app/google-services.json
+firebase.json
+
+# IDE konfigurace
+.idea/
+*.iml
+
+# NDK a CMake
+.cxx/
+.externalNativeBuild/
+
+# JetBrains Rider a Code styles
+/.idea/codeStyles/
+.idea/.name
+
+# Testovací výstupy
+/test-output/
