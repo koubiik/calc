@@ -22,6 +22,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         MaterialButton buttonDivide, buttonMultiply,buttonPlus, buttonMinus,buttonEquals;
 MaterialButton button0, button1, button2, button3, button4, button5, button6, button7, button8, button9;
         MaterialButton buttonAC, buttonDot;
+        //---
+        MaterialButton buttonSquare, buttonPower, buttonSqrt, buttonLn;
+
 @Override
 protected void onCreate(Bundle savedInstanceState) {
     super .onCreate(savedInstanceState);
@@ -49,6 +52,11 @@ protected void onCreate(Bundle savedInstanceState) {
     assignId(button9,R.id.button_9);
     assignId(buttonAC, R.id.button_ac);
     assignId(buttonDot,R.id.button_dot);
+    //---
+    assignId(buttonSquare, R.id.button_sq);
+    assignId(buttonPower, R.id.button_pow);
+    assignId(buttonSqrt, R.id.button_sqrt);
+    assignId(buttonLn, R.id.button_ln);
 }
     void assignId(MaterialButton btn, int id){
     btn = findViewById(id);
@@ -71,9 +79,19 @@ protected void onCreate(Bundle savedInstanceState) {
         }
         if(buttonText.equals("C")){
             dataToCalculate = dataToCalculate.substring(0,dataToCalculate.length()-1);
-        }else{
+        }
+        else if (buttonText.equals("x²")) {
+            dataToCalculate += "^2";
+        } else if (buttonText.equals("xʸ")) {
+            dataToCalculate += "^";
+        } else if (buttonText.equals("√")) {
+            dataToCalculate += "sqrt(";
+        } else if (buttonText.equals("ln")) {
+            dataToCalculate += "ln(";}
+        else{
             dataToCalculate = dataToCalculate+buttonText;
         }
+
         solutionTv.setText(dataToCalculate);
 
         String finalResult = getResult(dataToCalculate);
@@ -84,16 +102,37 @@ protected void onCreate(Bundle savedInstanceState) {
     }
 
     String getResult(String data){
-        try{
-        Context context = Context. enter();
-        context.setOptimizationLevel(-1);
-        Scriptable scriptable = context.initStandardObjects();
-        String finalresult = context.evaluateString(scriptable, data, "Javascript", 1, null).toString();
-        if (finalresult.endsWith(".0")){
-            finalresult = finalresult.replace(".0", "");
-        }
-        return finalresult;
-        }catch (Exception e){
+        try {
+            Context context = Context.enter();
+            context.setOptimizationLevel(-1);
+            Scriptable scriptable = context.initStandardObjects();
+
+            // Přidání násobení před odmocninou nebo logaritmem, pokud je před nimi číslo
+            data = data.replaceAll("(\\d)(sqrt|ln)\\(", "$1*$2(");
+
+            // Nahrazení mocnin správně pomocí Math.pow()
+            data = data.replaceAll("(\\d+)\\^([\\d.]+)", "Math.pow($1,$2)");
+
+            // Odmocnina: sqrt() místo √
+            data = data.replace("sqrt(", "Math.sqrt(");
+
+            // Logaritmus přirozeného základu
+            data = data.replaceAll("ln\\(([^)]+)\\)", "Math.log($1)");
+
+            // Kontrola dělení nulou
+            if (data.contains("/0")) {
+                return "Error";
+            }
+
+            String finalResult = context.evaluateString(scriptable, data, "JavaScript", 1, null).toString();
+
+            // Odebrání .0 u celých čísel
+            if (finalResult.endsWith(".0")) {
+                finalResult = finalResult.replace(".0", "");
+            }
+
+            return finalResult;
+        } catch (Exception e) {
             return "Error";
         }
     }
