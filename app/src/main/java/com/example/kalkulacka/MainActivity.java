@@ -22,7 +22,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         MaterialButton buttonDivide, buttonMultiply,buttonPlus, buttonMinus,buttonEquals;
 MaterialButton button0, button1, button2, button3, button4, button5, button6, button7, button8, button9;
         MaterialButton buttonAC, buttonDot;
-        //---
+
         MaterialButton buttonSquare, buttonPower, buttonSqrt, buttonLn;
 
 @Override
@@ -52,7 +52,6 @@ protected void onCreate(Bundle savedInstanceState) {
     assignId(button9,R.id.button_9);
     assignId(buttonAC, R.id.button_ac);
     assignId(buttonDot,R.id.button_dot);
-    //---
     assignId(buttonSquare, R.id.button_sq);
     assignId(buttonPower, R.id.button_pow);
     assignId(buttonSqrt, R.id.button_sqrt);
@@ -107,26 +106,20 @@ protected void onCreate(Bundle savedInstanceState) {
             context.setOptimizationLevel(-1);
             Scriptable scriptable = context.initStandardObjects();
 
-            // Přidání násobení před odmocninou nebo logaritmem, pokud je před nimi číslo
             data = data.replaceAll("(\\d)(sqrt|ln)\\(", "$1*$2(");
 
-            // Nahrazení mocnin správně pomocí Math.pow()
             data = data.replaceAll("(\\d+)\\^([\\d.]+)", "Math.pow($1,$2)");
 
-            // Odmocnina: sqrt() místo √
             data = data.replace("sqrt(", "Math.sqrt(");
 
-            // Logaritmus přirozeného základu
             data = data.replaceAll("ln\\(([^)]+)\\)", "Math.log($1)");
 
-            // Kontrola dělení nulou
             if (data.contains("/0")) {
                 return "Error";
             }
 
             String finalResult = context.evaluateString(scriptable, data, "JavaScript", 1, null).toString();
 
-            // Odebrání .0 u celých čísel
             if (finalResult.endsWith(".0")) {
                 finalResult = finalResult.replace(".0", "");
             }

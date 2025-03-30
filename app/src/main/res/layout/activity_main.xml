@@ -51,7 +51,7 @@
                 android:layout_margin="12dp"
                 android:id="@+id/button_c"
                 android:text="C"
-                app:backgroundTint="#a7a7a7" />
+                app:backgroundTint="#D22B2B" />
 
             <com.google.android.material.button.MaterialButton
                 android:layout_width="72dp"
@@ -251,7 +251,7 @@
                 android:layout_margin="12dp"
                 android:id="@+id/button_ac"
                 android:text="Ac"
-                app:backgroundTint="#a7a7a7" />
+                app:backgroundTint="#D22B2B" />
 
             <com.google.android.material.button.MaterialButton
                 android:layout_width="72dp"
